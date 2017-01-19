@@ -26,7 +26,7 @@
 		public var last:uint;
 		public var delta:uint;
 		public var steps:uint = 0;
-		public var maxStep:uint = 1.5 * fps;
+		public var maxStep:uint = 2 * fps;
 		
 		
 		
@@ -132,10 +132,8 @@
 					activeScreen.gameLoop();
 					steps = steps - fps;
 				}
-				activeScreen.drawScene();
-				
-				
 			}
+			activeScreen.drawScene();
 			activeScreen.incre = 0;
 		}
 

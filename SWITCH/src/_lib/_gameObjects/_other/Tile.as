@@ -90,8 +90,9 @@
 		
 		override public function onShowMe():void
 		{
-			getComponent(GraphicsComponent).spriteManager = aniMachine;
-			getComponent(GraphicsComponent)._camera = _scene.camera;
+			gc = getComponent(GraphicsComponent);
+			gc.spriteManager = aniMachine;
+			gc.camera = _scene.camera;
 		}
 		
 		public function collisionResolution():void

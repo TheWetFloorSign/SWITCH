@@ -82,6 +82,7 @@
 				targetName = $name;
 				targetPosition = position;
 				_scene.camera.fadeOut(10, 0x000000, swapLevel);
+				_scene.pauseScene = true;
 				
 			}
 			
@@ -110,6 +111,7 @@
 			}
 			
 			_scene.camera.fadeIn(10, 0x000000);
+			_scene.pauseScene = false;
 		}
 
 //- EVENT HANDLERS ----------------------------------------------------------------------------------------

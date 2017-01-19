@@ -33,8 +33,10 @@
 			
 			aniMachine = new AnimationStateMachine();
 			componentList.push(new GraphicsComponent(this));
-			getComponent(GraphicsComponent).clampY = true;
-			getComponent(GraphicsComponent).clampX = true;
+			gc = getComponent(GraphicsComponent);
+			gc.clampY = true;
+			gc.clampX = true;
+			gc.zBuff = 1;
 			setAnimations();
 			type = "ui";
 		}
@@ -94,7 +96,7 @@
 				_buffer.copyPixels(aniMachine._library.getFrame("blip"+fill).sprite, new Rectangle(0,0,aniMachine._library.getFrame("blip"+fill).width,aniMachine._library.getFrame("blip"+fill).height), new Point(8 + i * 4,1),null,null,true);
 			}
 			getComponent(GraphicsComponent).sprite = _buffer;
-			getComponent(GraphicsComponent)._camera = _camera;
+			getComponent(GraphicsComponent).camera = _camera;
 		}
 		
 		public function setAnimations():void{

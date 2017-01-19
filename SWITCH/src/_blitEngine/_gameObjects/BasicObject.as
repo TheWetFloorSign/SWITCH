@@ -1,6 +1,7 @@
 ﻿package  _blitEngine._gameObjects{
 	
 	import _blitEngine._PlayerInput.IInput;
+	import _lib._gameObjects._components.GraphicsComponent;
 	import _lib._gameObjects._components.HitBox;
 	import _blitEngine._gameObjects._components.IComponent;
 	import flash.display.Bitmap;
@@ -60,6 +61,8 @@
 		
 		public var type:String = "";
 		
+		public var gc:GraphicsComponent;
+		
 		/* 
 		totalSpeed is used when x and y speeds are linked so that the speed vector doesn't 
 		exceed the total intended speed.   */
@@ -108,6 +111,8 @@
 				
 		public function killMe():void{
 			_scene.removeGameOb(this);	
+			_alive = false;
+			_exists = false;
 			resetMe();
 		}
 		
@@ -171,5 +176,10 @@
 		public function onShowMe():void{}
 		
 		public function updateMe():void{}
+		
+		public function render():void
+		{
+			if (gc != null) gc.render();
+		}
 	}	
 }

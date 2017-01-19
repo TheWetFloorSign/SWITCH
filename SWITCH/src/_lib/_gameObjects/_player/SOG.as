@@ -349,7 +349,8 @@
 		}		
 		
 		override public function onShowMe():void{
-			getComponent(GraphicsComponent)._camera = _camera;
+			gc = getComponent(GraphicsComponent);
+			gc.camera = _camera;
 			moveState = new Idle();
 			jumpState = new Stand();
 			
@@ -414,7 +415,7 @@
 			aniMachine._library.newFrame("land9","SOG",341,48,43,33,false,0,0,-1);
 			aniMachine._library.newFrame("land10","SOG",385,48,43,33,false,0,0,-1);
 			
-			var ani:BlitAnimation = new BlitAnimation("idle",aniMachine._library,true);
+			var ani:BlitAnimation = new BlitAnimation("idle",aniMachine._library,true,12);
 			ani.addFrame("idle1","idle2","idle3","idle4");
 			aniMachine.animationList.push(ani);
 			aniMachine.addStateParams("idle", {ground:true, walk:false});
@@ -437,7 +438,7 @@
 			ani.addFrame("land1","land2","land3","land4","land5","land6","land7","land8","land9","land10");
 			aniMachine.animationList.push(ani);
 			
-			ani = new BlitAnimation("walk",aniMachine._library,true);
+			ani = new BlitAnimation("walk",aniMachine._library,true,8);
 			ani.addFrame("run1","run2","run3","run4","run5","run6","run7","run8","run9","run10");
 			aniMachine.animationList.push(ani);
 			aniMachine.addStateParams("walk", {ground:true, walk:true});

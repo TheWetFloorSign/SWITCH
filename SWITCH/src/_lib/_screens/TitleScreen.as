@@ -35,9 +35,10 @@
 						
 			var titleSprite:BasicObject = new BasicObject();
 			titleSprite.addComponent(new GraphicsComponent(titleSprite));
-			var graph:GraphicsComponent = titleSprite.getComponent(GraphicsComponent);
+			titleSprite.gc = titleSprite.getComponent(GraphicsComponent);
+			var graph:GraphicsComponent = titleSprite.gc;
 			graph.sprite = title.bitmapData;
-			graph._camera = camera;
+			graph.camera = camera;
 			graph.clampX = graph.clampY = true;
 			titleSprite.showMe(this);
 		}

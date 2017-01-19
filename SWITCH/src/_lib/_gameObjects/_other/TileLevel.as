@@ -15,7 +15,6 @@
 	import flash.utils.ByteArray;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import _lib.TestJSON2;
 	import _lib.TestJSON;
 	import _blitEngine.ExtraFunctions;
 	import _lib._gameObjects._components.GraphicsComponent;
@@ -70,6 +69,7 @@
 		
 		public function setLevel():void{
 			testOb = testJSON;
+			trace(testOb);
 			drawMap(testOb.background);
 			findSpawns();
 			placeObjects();
@@ -102,22 +102,30 @@
 								break;
 							}
 						}
-						if (newT.frames[0].flip) tile.getComponent(GraphicsComponent)._hFlip = -1;
 						
-						tile.loadAnimation(newT.frames);
+						tile.x = (w * 24)+(12);
+						tile.y = h;
+						trace(newT.frames);
+						if (newT.frames)
+						{
+							if (newT.frames[0].flip) tile.getComponent(GraphicsComponent)._hFlip = -1;
+						
+							tile.loadAnimation(newT.frames);
+							tile.y = tile.y * newT.frames[0].frameSize[0] + newT.frames[0].frameSize[0];
+						}
+						
 						if(newT.slope){
 							tile.slope = newT.slope;
 							tile.slopePosition = newT.slopePosition;
 						}
-												
-
-						tile.x = (w * 24)+(12);
-						tile.y = h * newT.frames[0].frameSize[0] + newT.frames[0].frameSize[0];
+						
 						if (newT.hitbox != undefined) tile.addHitBox(1, 1);
 						tile.last.x = tile.x;
 						tile.last.y = tile.y;
-						if(map[h-1] == undefined || (map[h-1][w] == 0 || map[h-1][w] == undefined))tile.allowCollision |= ExtraFunctions.DOWN;
+						//if(map[h-1] == undefined || (map[h-1][w] == 0 || map[h-1][w] == undefined))tile.allowCollision |= ExtraFunctions.DOWN;
+						tile.allowCollision |= ExtraFunctions.DOWN;
 						if(map[h+1] == undefined || (map[h+1][w] == 0 || map[h+1][w] == undefined))tile.allowCollision |= ExtraFunctions.UP;
+						//tile.allowCollision |= ExtraFunctions.UP;
 						if(map[h][w - 1] == 0 || map[h][w-1] == undefined) tile.allowCollision |= ExtraFunctions.LEFT;
 						if(map[h][w+1] == 0 || map[h][w+1] == undefined) tile.allowCollision |= ExtraFunctions.RIGHT;
 						members.push(tile);
@@ -145,10 +153,11 @@
 				manager = new LevelManager(_scene, this);
 				_scene.addManager(manager);
 			}
-			var tempJSON:Object = new TestJSON2();
-			manager.addLevel("level2", new TileLevel(tempJSON.testJSON));
-			tempJSON = new TestJSON();
-			manager.addLevel("level1", new TileLevel(tempJSON.testJSON));
+			for (var i:int = testOb.levels.length - 1; i >= 0; i--)
+			{
+				var type:Class = ObjectList.classByID(testOb.levels[i]);
+				manager.addLevel(testOb.levels[i], new TileLevel(new type().testJSON));
+			}
 		}
 		
 		public function placeObjects():void

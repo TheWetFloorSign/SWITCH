@@ -173,8 +173,8 @@ package  _blitEngine{
 		}
 		
 		private function containsArea(location:Rectangle):Boolean{
-			//return rectOverlap(m_bounds, location);
-			return rectContains(m_bounds,location);
+			return rectOverlap(m_bounds, location);
+			//return rectContains(m_bounds,location);
 		}
 
 		private function getCellToInsertObject(location:Rectangle):int{

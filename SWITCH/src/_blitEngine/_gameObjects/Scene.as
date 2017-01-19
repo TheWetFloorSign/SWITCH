@@ -143,20 +143,7 @@ package _blitEngine._gameObjects
 		
 		public function drawScene():void
 		{
-			camera.canvas.lock();
 			camera.update();
-			total = storageArray.length-1;
-			
-			for (var a:int = total; a >=0; a--)
-			{
-				gc = storageArray[total-a].getComponent(GraphicsComponent);
-				if (gc != null)
-				{
-					gc.render();
-				}
-			}
-			camera.updateEffects();
-			camera.canvas.unlock();
 		}
 		
 		public function orderCollisionDirection(a:HitBox, b:HitBox):int{

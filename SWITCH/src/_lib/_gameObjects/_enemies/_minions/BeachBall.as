@@ -99,7 +99,8 @@ package _lib._gameObjects._enemies._minions{
 		}
 		
 		override public function onShowMe():void{
-			getComponent(GraphicsComponent)._camera = _camera;
+			gc = getComponent(GraphicsComponent);
+			gc._camera = _camera;
 		}
 			
 		public function enterCollision():void

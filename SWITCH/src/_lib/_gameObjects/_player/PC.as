@@ -171,7 +171,9 @@
 		}
 		
 		override public function onShowMe():void{
-			getComponent(GraphicsComponent)._camera = _camera;
+			gc = getComponent(GraphicsComponent);
+			gc.camera = _camera;
+			gc.zBuff = 1;
 			moveState = new Idle();
 			jumpState = new Stand();
 			actionState = new ActionIdle();

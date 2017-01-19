@@ -97,12 +97,7 @@
 
 		override public function endOfFrameUpdates():void
 		{
-			/*if (pc.x >= 1800)
-			{
-				loadLevel();
-				pc.last.x = pc.x = level2.playerSpawn.x;
-				pc.last.y = pc.y = level2.playerSpawn.y;
-			}*/
+			
 		}
 		
 		override public function createAssets():void
@@ -144,8 +139,10 @@
 
 			playerInput.addKeyboardActionBinding("increase",PlayerInfo.DEVBUT1);
 			playerInput.addKeyboardActionBinding("decrease",PlayerInfo.DEVBUT2);
-
-			level = new TileLevel();
+			
+			
+			var minClass:Class = ObjectList.classByID("Appartments");
+			level = new TileLevel(new minClass().testJSON);
 
 			sog = new SOG();
 			switchPC = new PC();

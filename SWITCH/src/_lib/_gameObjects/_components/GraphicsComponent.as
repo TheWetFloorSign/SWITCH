@@ -4,6 +4,7 @@ package  _lib._gameObjects._components
 	import _blitEngine.BitPoint;
 	import _blitEngine.BitCamera;
 	import _blitEngine._blit.BlitSprite;
+	import _blitEngine._gameObjects.BasicObject;
 	import _blitEngine._gameObjects._components.IComponent;
 	import flash.display.BitmapData;
 	import flash.geom.Matrix;
@@ -35,14 +36,17 @@ package  _lib._gameObjects._components
 		
 		public var clampY:Boolean = false;
 		public var clampX:Boolean = false;
-		private var actHB:HitBox
-		private var debug:BitmapData
+		private var actHB:HitBox;
+		private var debug:BitmapData;
+		
+		public var zBuff:int = 0;
 		
 		private var actor:*;
 		
-		public function GraphicsComponent(_actor:*):void
+		public function GraphicsComponent(_actor:*,camera:BitCamera = null):void
 		{
 			actor = _actor;
+			if (camera != null) camera.addDraw(this);
 		}
 		
 		public function get currentDisplay(): BitmapData
@@ -76,6 +80,17 @@ package  _lib._gameObjects._components
 		{
 			if (spriteManager) return spriteManager.aniFrame.yOff;
 			return 0;
+		}
+		
+		public function get parent():BasicObject
+		{
+			return actor;
+		}
+		
+		public function set camera(cam:BitCamera):void
+		{
+			_camera = cam;
+			cam.addDraw(this);
 		}
 		
 		public function render():void{

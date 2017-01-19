@@ -1,10 +1,10 @@
-﻿package _lib {
+package _lib {
 	
-	public class TestJSON2 {
+	public class TestJSON3 {
 		
 		public var testJSON:Object;
 		
-		public function TestJSON2() {
+		public function TestJSON3() {
 			testJSON = {
     "tiles": [
         {
@@ -32,7 +32,7 @@
             "id": 3,
             "frames": [
                 {
-                    "framePosition": [9 * 24,2*24], "frameSize": [24,24]
+                    "framePosition": [0,0], "frameSize": [24,24]
                 }
             ],
             "hitbox": [
@@ -525,13 +525,14 @@
 		
     ],
     "background": [
-        [ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-		[ 3,  ,  ,  ,  ,  ,  ,  ,  ,  , 3],
-		[ 3,  ,  ,  ,  ,  ,  ,  ,  ,  , 3],
-		[ 3,  ,  ,  ,  , 3,  ,  ,  ,  , 3],
-		[ 3, 6,  ,  ,  ,  ,  ,  ,  , 5, 3],
-		[ 3, 3,10, 9,  ,  ,  , 7, 8, 3, 3],
-		[ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+        [ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+		[ 3,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 3],
+		[ 3,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 3],
+		[ 3,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 3],
+		[ 3,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 3],
+		[ 3, 2, 2, 6,  ,  ,  ,  ,  ,  ,  , 5, 3],
+		[ 3, 2, 2, 2, 6,  ,  ,  ,  , 7, 8, 3, 3],
+		[ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
     ],
 	"spawns": [	{
 			"location":{"x":48, "y":48}
@@ -554,9 +555,9 @@
 	"objectSpawns":[
 		{
 			"id":4,
-			"location":{"x":5 * 24, "y":6 * 24},
+			"location":{"x":6 * 24, "y":7 * 24},
 			"level":"Level1",
-			"position":{"x":3 * 24, "y":22 * 24}
+			"position":{"x":11 * 24, "y":24 * 24}
 		}
 	],
 	"levels":[
