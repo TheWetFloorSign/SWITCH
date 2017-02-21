@@ -26,7 +26,7 @@
 		public var jumpRemaining:int;
 		public var jumpMax:int;
 		
-		public var sprite:GraphicsComponent;
+		public var gc:GraphicsComponent;
 		
 		private var debug:DebugBox = new DebugBox();
 		

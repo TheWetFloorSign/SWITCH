@@ -100,6 +100,8 @@ package  _lib._gameObjects._components
 			actor.x += vector.x;
 			actor.y += vector.y;
 		}
+		
+		public function kill():void{}
 	}
 	
 }

@@ -52,13 +52,14 @@
 		}	
 		
 		override public function onShowMe():void{
-			gc = getComponent(GraphicsComponent);
-			gc.sprite = _bmdCanvas;
-			gc.camera = _camera;
-			gc.scrollMod.x = 0.25;
-			gc.scrollMod.y = 0.25;
-			gc.zBuff = -1;
-			x = gc.width/2;
+			sprite = getComponent(GraphicsComponent);
+			sprite.zBuff = -1;
+			sprite.sprite = _bmdCanvas;
+			sprite.camera = _camera;
+			sprite.scrollMod.x = 0.25;
+			sprite.scrollMod.y = 0.25;
+			
+			x = sprite.width/2;
 			y = 300;
 		}
 		

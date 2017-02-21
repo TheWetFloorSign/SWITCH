@@ -1,5 +1,8 @@
 ﻿package  _blitEngine{
 	import _blitEngine._blit.*;
+	import flash.display.BitmapData;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	public class AnimationStateMachine {
 		
 		private var stateList:Array;
@@ -10,10 +13,12 @@
 		public var animationDelay:int = 0;
 		
 		public var _default:BlitAnimation;
+		public var _sprite:BitmapData;
 		public var _library:FrameLibrary;
 		public var animationList:Array;
 		public var _transitionVars:Array;
 		public var _stateVars:Array;
+		private var spriteLibrary:SpriteLibrary;
 		
 		public function AnimationStateMachine() {
 			// constructor code
@@ -22,14 +27,23 @@
 			_library = new FrameLibrary();
 			_transitionVars = [];
 			_stateVars = [];
+			_sprite = new BitmapData(1, 1);
+			spriteLibrary = SpriteLibrary.getInstance();
 		}
 		
 		public function get aniState():BlitAnimation{
 			return (stateList.length>0)?stateList[stateList.length-1]:_default;
 		}
 		
+		public function get sprite():BitmapData
+		{
+			return _sprite;
+		}
+		
 		public function set defaultAnimation(_def:String):void{
 			_default = findAni(_def);
+			_sprite = new BitmapData(aniFrame.width, aniFrame.height,true,0x00000000);
+			_sprite.copyPixels(spriteLibrary.getSprite(aniFrame.sheet), new Rectangle(aniFrame.x, aniFrame.y, aniFrame.width, aniFrame.height), new Point(), null, null, true);
 		}
 		
 		public function get aniFrame():BlitFrame{
@@ -63,6 +77,8 @@
 					}
 					_curFrame = 0;
 				}
+				_sprite = new BitmapData(aniFrame.width, aniFrame.height,true,0x00000000);
+				_sprite.copyPixels(spriteLibrary.getSprite(aniFrame.sheet), new Rectangle(aniFrame.x, aniFrame.y, aniFrame.width, aniFrame.height), new Point(), null, null, true);
 					
 			}
 			
@@ -112,6 +128,8 @@
 				stateList.push(findAni(blit));
 				_curFrame = 0;
 				aniTic = -1;
+				_sprite = new BitmapData(aniFrame.width, aniFrame.height,true,0x00000000);
+				_sprite.copyPixels(spriteLibrary.getSprite(aniFrame.sheet), new Rectangle(aniFrame.x, aniFrame.y, aniFrame.width, aniFrame.height), new Point(), null, null, true);
 			}
 		}
 		

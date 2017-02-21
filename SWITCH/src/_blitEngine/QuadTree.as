@@ -99,7 +99,7 @@ package  _blitEngine{
 		}
 	
 		public function remove(objectToRemove:HitBox):void{
-			if(containsArea(new Rectangle(objectToRemove.parent.x + objectToRemove.left,
+			if(rectOverlap(m_bounds, new Rectangle(objectToRemove.parent.x + objectToRemove.left,
 										objectToRemove.parent.y + objectToRemove.top,
 										objectToRemove.size.x,
 										objectToRemove.size.y))){
@@ -180,7 +180,7 @@ package  _blitEngine{
 		private function getCellToInsertObject(location:Rectangle):int{
 			var temp:uint = 0x0000;
 			for (var i:int = 0; i < 4; i++) {
-				if (cells[i].containsArea(location)) {
+				if (cells[i].rectOverlap(cells[i].m_bounds, location)) {
 					switch(i){
 						case 0:
 							temp |= 0x1000;
@@ -203,7 +203,7 @@ package  _blitEngine{
 		private function getCellsToInsertObject(location:Rectangle):uint{
 			var temp:uint = 0x0000;
 			for (var i:int = 0; i < 4; i++) {
-				if (cells[i].containsArea(location)) {
+				if (cells[i].rectOverlap(cells[i].m_bounds, location)) {
 					switch(i){
 						case 0:
 							temp |= 0x1000;

@@ -34,7 +34,7 @@ package _lib._States._SWITCH
 			if (actionTic == 10)
 			{
 				actor._scene.soundManager.playSound("wiff", 1.5);
-				new Attack(actor,new Rectangle(30,12,15,12),new BitPoint(actor.getComponent(GraphicsComponent)._hFlip * 5,-2),new BitPoint(actor.getComponent(GraphicsComponent)._hFlip *9,-10));
+				new Attack(actor,new Rectangle(30,12,15,12),new BitPoint(actor.getComponent(GraphicsComponent)._hFlip * 4,-2),new BitPoint(actor.getComponent(GraphicsComponent)._hFlip *9,-10));
 			}
 			return null;
 		}

@@ -26,19 +26,21 @@ package _lib._gameObjects._enemies._minions{
 		
 		private var tempState:IState;
 		
-		public var sprite:GraphicsComponent;
+		public var gc:GraphicsComponent;
+		public var hb:HitBox;
 		
 		
 		public function Dummy(){
 			// initialization
 			_xspeed = 1;
-			componentList.push(new HitBox(this,12, 32,6,32));
+			componentList.push(new HitBox(this, 12, 31, 6, 31));
+			hb = getComponent(HitBox);
 			/*getComponent(HitBox).addEventListener(HitBox.COL_START, enterCollision);
 			getComponent(HitBox).addEventListener(HitBox.COL_CONT, continuedCollision);
 			getComponent(HitBox).addEventListener(HitBox.COL_END, exitCollision);*/
-			getComponent(HitBox).collision1 = enterCollision;
-			getComponent(HitBox).collision2 = continuedCollision;
-			getComponent(HitBox).collision3 = exitCollision;
+			hb.collision1 = enterCollision;
+			hb.collision2 = continuedCollision;
+			hb.collision3 = exitCollision;
 			
 			componentList.push(new PhysicsLite(this));
 			getComponent(PhysicsLite).termVel = 8;
@@ -110,8 +112,8 @@ package _lib._gameObjects._enemies._minions{
 		}
 		
 		override public function resetMe():void{
-			this._x = 200;
-			this._y = 200;
+			//this._x = 200;
+			//this._y = 200;
 		}		
 		
 		private function updateInputs():void{
@@ -130,7 +132,7 @@ package _lib._gameObjects._enemies._minions{
 			aniMachine.animationList.push(ani);
 			aniMachine.addStateParams("idle", {damage:false});
 			
-			ani = new BlitAnimation("damage",aniMachine._library,true);
+			ani = new BlitAnimation("damage",aniMachine._library,true,12);
 			ani.addFrame("damage1","idle1");
 			aniMachine.animationList.push(ani);			
 			aniMachine.addStateParams("damage", {damage:true});
@@ -142,7 +144,8 @@ package _lib._gameObjects._enemies._minions{
 		
 		override public function onShowMe():void{
 			gc = getComponent(GraphicsComponent);
-			gc._camera = _camera;
+			gc.camera = _camera;
+			gc.zBuff = 1;
 		}
 			
 		public function enterCollision():void
@@ -151,7 +154,7 @@ package _lib._gameObjects._enemies._minions{
 			if (!isHit)
 			{
 				isHit = true;
-				getComponent(GraphicsComponent)._hFlip = (getComponent(HitBox).target.x > x)?-1:1;
+				gc._hFlip = (hb.target.x > x)?-1:1;
 			}
 		}
 		

@@ -35,6 +35,7 @@
 				members[members.length - 1].killMe();
 				members.pop();
 			}
+			trace("in super");
 		}
 	}	
 }

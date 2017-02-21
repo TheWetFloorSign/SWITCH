@@ -74,11 +74,17 @@ package _lib {
 	],
 	"objectSpawns":[
 		{
-			"id":1,
-			"location":{"x":456, "y":192}
+			"id":2,
+			"location":{"x":8*24, "y":6*24}
+		},{
+			"id":2,
+			"location":{"x":20*24, "y":6*24}
 		},{
 			"id":3,
-			"location":{"x":200, "y":384}
+			"location":{"x":20*24, "y":6*24}
+		},{
+			"id":3,
+			"location":{"x":20*24, "y":6*24}
 		},{
 			"id":4,
 			"location":{"x":1 * 24, "y":7 * 24},

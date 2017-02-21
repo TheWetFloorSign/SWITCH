@@ -35,7 +35,6 @@ package _lib._States._Dummy
 			}
 			
 			_tic--;
-			gc = actor.getComponent(GraphicsComponent);
 			if (_tic % 12 == 0 && gc != null) gc._hFlip = -gc._hFlip;
 			return null;
 		}
@@ -43,6 +42,7 @@ package _lib._States._Dummy
 		public function enter(actor:*):void 
 		{
 			actor.aniMachine.changeVariables("damage", true);
+			gc = actor.getComponent(GraphicsComponent);
 			_tic = 36;
 		}
 		

@@ -15,6 +15,7 @@ package _blitEngine._PlayerInput{
 	{
 		private var _aiObject:*;
 		private var _actions:Array = [];
+		private var centerX:Number;
 		
 		private var hb:HitBox;
 		
@@ -68,22 +69,18 @@ package _blitEngine._PlayerInput{
 		{
 			if (hb != null && _aiObject._playerInfo != null)
 			{
+				_aiObject._left = false;
+				_aiObject._right = false;
 				if (_tic >= 47 && _aiObject.touching & ExtraFunctions.DOWN){
-					if (_aiObject._playerInfo.playerX > _aiObject.x + hb.centerx){
-						_aiObject._right = (Math.abs(_aiObject._playerInfo.playerX -(_aiObject.x + hb.centerx))<100)?true:false;
-					}else{
-						_aiObject._left = (Math.abs(_aiObject._playerInfo.playerX -(_aiObject.x + hb.centerx))<100)?true:false;
+					centerX = _aiObject.x + hb.centerx;
+					if (Math.abs(_aiObject._playerInfo.playerX -centerX)<100){
+						(_aiObject._playerInfo.playerX -centerX < 0)? _aiObject._left = true:_aiObject._right = true;
+						_aiObject.aniMachine.changeVariables("idle", false);
+					}else
+					{
+						_aiObject.aniMachine.changeVariables("idle", true);	
 					}
 					_tic = 0;
-				}else{
-					_aiObject._left = false;
-					_aiObject._right = false;
-				}
-				if (_aiObject.touching & ExtraFunctions.DOWN)
-				{
-					_aiObject.aniMachine.changeVariables("idle", false);				
-				}else{				
-					_aiObject.aniMachine.changeVariables("idle", true);
 				}
 				_tic++;
 			}

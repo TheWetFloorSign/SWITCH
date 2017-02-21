@@ -144,79 +144,12 @@ package _blitEngine._gameObjects
 		public function drawScene():void
 		{
 			camera.update();
-		}
-		
-		public function orderCollisionDirection(a:HitBox, b:HitBox):int{
-							
-			if (a.parent.y + a.centery < b.parent.y + b.centery) {
-				return -signv;
-			} else if (b.parent.y + b.centery < a.parent.y + a.centery) {
-				return signv;
-			} else {
-				if(a.parent.x + a.centerx < b.parent.x + b.centerx){
-					return signh;
-				}else if(a.parent.x + a.centerx > b.parent.x + b.centerx){
-					return -signh;
-				}
-				return 0;
-			}
-		}		
+		}	
 		
 		public function staticTileHit():void
 		{
 			quadTree.overlap(getTagged("player",""), getTagged("tile"));
-			/*var collided:Boolean = false;
-			var basOb:BasicObject;
-			var broadRec:Rectangle;
-			for (var i:int = collisionArray.length - 1; i >= 0; i--)
-			{
-				basOb = collisionArray[i];
-				if (basOb.type != "tile" && basOb.type != "ui" && basOb.type != "bg" && basOb.type != "attack")
-				{
-					ob1Hit = basOb.getComponent(HitBox);
-					if (ob1Hit == null)
-					{
-						continue;
-					}
-					refOb = basOb;
-					broadRec = ExtraFunctions.broadPhaseRect(ob1Hit);
-					ob2List = quadTree.retrieveObjectsInCollision(broadRec);
-					
-					if (ob2List == null){
-						//trace("was null");
-						continue;
-					}
-					
-					for (var k:int = ob2List.length - 1; k >= 0; k--)
-					{
-						
-						if (ob2List[k].parent.type != "tile" || ob2List[k] == refOb){
-							ob2List.splice(k, 1);
-						}
-					}
-					signv = (basOb.y - basOb.last.y >0)?-1:1;
-					signh = (basOb.x - basOb.last.x >0)?-1:1;
-					ob2List.sort(orderCollisionDirection);
-					debug.debug("Objects in returned quadTree list for staticTileHit",ob2List.length);
-						
-					for (var j:int = ob2List.length - 1; j >= 0; j--)
-					{	
-						
-						if (ExtraFunctions.broadCollision(ob2List[j], ob1Hit))
-						{
-							ob2List[j].collisionResolution(refOb);
-							collided = true;
-							//broadRec = ExtraFunctions.broadPhaseRect(ob1Hit);
-						}						
-					}
-					if (collided){
-						quadTree.remove(ob1Hit);
-						quadTree.insert(ob1Hit);
-					}
-					
-					
-				}
-			}*/
+			
 			debug.debug("");
 			
 		}
@@ -224,70 +157,7 @@ package _blitEngine._gameObjects
 		public function hitDetection():void
 		{
 			quadTree.overlap(getTagged("attack","player"), getTagged(""));
-			/*var hitRect:Rectangle = new Rectangle();
-			var collisionSet:Array;
-			for (var i:int = collisionArray.length - 1; i >= 0; i--)
-			{
-				
-				if (collisionArray[i].type != "tile" && collisionArray[i].type != "ui" && collisionArray[i].type != "bg")
-				{
-					ob1Hit = collisionArray[i].getComponent(HitBox);
-					//trace(collisionArray[i]);
-					if (ob1Hit == null)
-					{
-						continue;
-					}
-					refOb = collisionArray[i];
-					hitRect.setTo(refOb.x + ob1Hit.left,
-									refOb.y + ob1Hit.top,
-									ob1Hit.size.x, 
-									ob1Hit.size.y);
-									
-					collisionSet = getTagged("");
-					for (var n:int = collisionSet.length - 1; n >= 0; n--)
-					{
-						quadTree.insert(collisionSet[n].getComponent(HitBox));
-					}
-					ob2List = quadTree.retrieveObjectsInCollision(hitRect);
-					
-					if (ob2List == null) continue;
-					
-					
-					
-					for (var k:int = ob2List.length - 1; k >= 0; k--)
-					{
-						var notListed:Boolean = true;
-						for (var l:int = colMatrix[collisionArray[i].type].length -1; l >= 0; l--){
-							if (ob2List[k].parent.type == colMatrix[collisionArray[i].type][l])
-							{
-								notListed = false;
-								continue;
-							}
-						}
-					//	if (ob2List[k].parent.type == "tile" || ob2List[k].parent.type == "ui" || ob2List[k].parent.type == "bg" || ob2List[k].parent.type == "attack" || ob2List[k].parent.type == "player" || ob2List[k] == refOb){
-							if(notListed)ob2List.splice(k, 1);
-					//	}
-					}
-					signv = (refOb.last.y - refOb.y <0)?-1:1;
-					signh = (refOb.last.x - refOb.x <0)?-1:1;
-					ob2List.sort(orderCollisionDirection);
-						
-					for (var j:int = ob2List.length - 1; j >= 0; j--)
-					{	
-						if (ExtraFunctions.broadCollision(ob1Hit, ob2List[j]))
-						{
-							//ob2List[j].collisionResolution(refOb);
-							ob1Hit.collisionResolution(ob2List[j].parent);
-							//quadTree.remove(ob2List[j]);
-							//quadTree.insert(ob2List[j]);
-						}
-						
-					}
-					quadTree.remove(ob1Hit);
-					quadTree.insert(ob1Hit);
-					
-				}
-			}*/
+			
 			
 		}
 		
@@ -323,11 +193,17 @@ package _blitEngine._gameObjects
 
 		public function updateThis(array:Array):void
 		{
+			var updated:int = 0;
 			for (var a:int = array.length - 1; a > -1; a--)
 			{
-				array[a].updateMe();
+				if (array[a]._alive)
+				{
+					array[a].updateMe();
+					updated++;
+				}
 				
 			}
+			//trace(updated);
 		}
 		
 		public function exitCollisions(array:Array):void
@@ -370,7 +246,7 @@ package _blitEngine._gameObjects
 			camera = new BitCamera(1080, 720, 4);
 			camera.debugHB = false;
 
-			quadTree = new QuadTree(12,6, new Rectangle( 0, 0, 2000, 650));
+			quadTree = new QuadTree(20,6, new Rectangle( 0, 0, 1000, 650));
 		}
 
 		public function setValues():void

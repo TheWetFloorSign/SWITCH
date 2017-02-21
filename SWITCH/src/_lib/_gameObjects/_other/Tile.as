@@ -1,5 +1,6 @@
 ﻿package  _lib._gameObjects._other{
 	
+	import _blitEngine._blit.SpriteLibrary;
 	import _blitEngine._gameObjects.BasicObject;
 	import _lib._gameObjects._components.GraphicsComponent;
 	import _lib._gameObjects._components.HitBox;
@@ -19,12 +20,21 @@
 		private var _slope:Array =[];
 		private var _slopePosition:String = "";
 		public var allowCollision:uint = 0x0000;
-		public var sprite:GraphicsComponent;
+		public var gc:GraphicsComponent;
 		
 		private var hitBox1:HitBox;
 		private var hitBox2:HitBox;
 		
 		private var target:BasicObject;
+		
+		private var ob1Delta:Number;
+		private var ob2Delta:Number;
+		private var ob1DeltaAbs:Number;
+		private var ob2DeltaAbs:Number;
+		
+		private var ob1Rect:Rectangle;
+														
+		private var ob2Rect:Rectangle;
 		
 		//------------------------------constructor-------------------------------------------
 		
@@ -36,6 +46,7 @@
 		//	getComponent(HitBox).addEventListener(HitBox.COL_END, collisionResolution);
 			componentList.push(new GraphicsComponent(this));
 			type = "tile";
+			_alive = false;
 		}
 		
 		//------------------------------Gets and Sets-------------------------------------------
@@ -58,7 +69,7 @@
 		//------------------------------Methods-------------------------------------------
 		
 		override public function updateMe():void{
-			aniMachine.updateAni();
+			//aniMachine.updateAni();
 		}
 		
 		public function loadAnimation(frames:Array):void{
@@ -68,7 +79,7 @@
 				
 				frameNum++;
 			}
-			var ani:BlitAnimation = new BlitAnimation("tile",aniMachine._library,true);
+			/*var ani:BlitAnimation = new BlitAnimation("tile",aniMachine._library,true);
 			var counter:int = 1;
 			while(counter <= frameNum){
 				ani.addFrame("tile"+counter);
@@ -76,7 +87,7 @@
 				counter++;
 			}
 			aniMachine.animationList.push(ani);
-			aniMachine.defaultAnimation = "tile";
+			aniMachine.defaultAnimation = "tile";*/
 			
 		}
 		
@@ -91,8 +102,11 @@
 		override public function onShowMe():void
 		{
 			gc = getComponent(GraphicsComponent);
-			gc.spriteManager = aniMachine;
-			gc.camera = _scene.camera;
+			var tempBMD:BitmapData = new BitmapData(24, 24, true, 0x00000000);
+			var spLibrary:SpriteLibrary = SpriteLibrary.getInstance();
+			tempBMD.copyPixels(spLibrary.getSprite("tileSheet"),new Rectangle(aniMachine._library.getFrame("tile1").x, aniMachine._library.getFrame("tile1").y,aniMachine._library.getFrame("tile1").width,aniMachine._library.getFrame("tile1").height), new Point(0,0),null,null,true);
+			gc.sprite = tempBMD;
+			//gc.camera = _scene.camera;
 		}
 		
 		public function collisionResolution():void
@@ -110,18 +124,18 @@
 			
 			if (slopePosition) return;
 			
-			var ob1Delta:Number = obj.x - obj.last.x;
-			var ob2Delta:Number = x - last.x;
+			ob1Delta = obj.x - obj.last.x;
+			ob2Delta = x - last.x;
 			if (ob1Delta != ob2Delta)
 			{
-				var ob1DeltaAbs:Number = (ob1Delta > 0)?ob1Delta: -ob1Delta;
-				var ob2DeltaAbs:Number = (ob2Delta > 0)?ob2Delta: -ob2Delta;
-				var ob1Rect:Rectangle = new Rectangle(obj.x + hitBox1.left - ((ob1Delta > 0)?ob1Delta:0),
+				ob1DeltaAbs = (ob1Delta > 0)?ob1Delta: -ob1Delta;
+				ob2DeltaAbs = (ob2Delta > 0)?ob2Delta: -ob2Delta;
+				ob1Rect = new Rectangle(obj.x + hitBox1.left - ((ob1Delta > 0)?ob1Delta:0),
 														obj.last.y + hitBox1.lastTop,
 														hitBox1.size.x + ((ob1Delta > 0)?ob1Delta: -ob1Delta),
 														hitBox1.lastSize.y);
 														
-				var ob2Rect:Rectangle = new Rectangle(x + hitBox2.left - ((ob2Delta > 0)?ob2Delta:0),
+				ob2Rect = new Rectangle(x + hitBox2.left - ((ob2Delta > 0)?ob2Delta:0),
 														last.y + hitBox2.lastTop,
 														hitBox2.size.x + ((ob2Delta > 0)?ob2Delta: -ob2Delta),
 														hitBox2.lastSize.y);
@@ -166,19 +180,19 @@
 				return;
 			}
 			
-			var ob1Delta:Number = obj.y - obj.last.y;
-			var ob2Delta:Number = y - last.y;
+			ob1Delta = obj.y - obj.last.y;
+			ob2Delta = y - last.y;
 			
 			if (ob1Delta != ob2Delta)
 			{
-				var ob1DeltaAbs:Number = (ob1Delta > 0)?ob1Delta: -ob1Delta;
-				var ob2DeltaAbs:Number = (ob2Delta > 0)?ob2Delta: -ob2Delta;
-				var ob1Rect:Rectangle = new Rectangle(obj.x + hitBox1.left, 
+				ob1DeltaAbs = (ob1Delta > 0)?ob1Delta: -ob1Delta;
+				ob2DeltaAbs = (ob2Delta > 0)?ob2Delta: -ob2Delta;
+				ob1Rect = new Rectangle(obj.x + hitBox1.left, 
 														obj.y + Math.min(hitBox1.top,hitBox1.lastTop) - ((ob1Delta > 0)?ob1Delta:0), 
 														hitBox1.size.x , 
 														Math.max(hitBox1.size.y,hitBox1.lastSize.y) + ((ob1Delta > 0)?ob1Delta: -ob1Delta));
 														
-				var ob2Rect:Rectangle = new Rectangle(x + hitBox2.left,
+				ob2Rect = new Rectangle(x + hitBox2.left,
 														y + Math.min(hitBox2.top,hitBox2.lastTop) - ((ob2Delta > 0)?ob2Delta:0),
 														hitBox2.size.x,
 														Math.max(hitBox2.size.y,hitBox2.lastSize.y) + ((ob2Delta > 0)?ob2Delta: -ob2Delta));
@@ -231,7 +245,7 @@
 					}
 				}
 			}
-			if (slopeCol == true)
+			if (slopeCol == true && !ob1.input.isActionActivated("down"))
 			{				
 				ob1.y = y - pointHeight;
 				ob1.touching |=  ExtraFunctions.DOWN;

@@ -7,6 +7,7 @@ package _blitEngine._gameObjects._components
 	public interface IComponent 
 	{		
 		function update():void;
+		function kill():void;
 	}
 	
 }

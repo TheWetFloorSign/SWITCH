@@ -24,7 +24,7 @@
 		public var jumpRemaining:int;
 		public var jumpMax:int;
 		
-		public var sprite:GraphicsComponent;
+		public var gc:GraphicsComponent;
 		
 		private var debug:DebugBox = new DebugBox();
 		
@@ -351,6 +351,7 @@
 		override public function onShowMe():void{
 			gc = getComponent(GraphicsComponent);
 			gc.camera = _camera;
+			gc.zBuff = 1;
 			moveState = new Idle();
 			jumpState = new Stand();
 			
@@ -415,7 +416,7 @@
 			aniMachine._library.newFrame("land9","SOG",341,48,43,33,false,0,0,-1);
 			aniMachine._library.newFrame("land10","SOG",385,48,43,33,false,0,0,-1);
 			
-			var ani:BlitAnimation = new BlitAnimation("idle",aniMachine._library,true,12);
+			var ani:BlitAnimation = new BlitAnimation("idle",aniMachine._library,true,20);
 			ani.addFrame("idle1","idle2","idle3","idle4");
 			aniMachine.animationList.push(ani);
 			aniMachine.addStateParams("idle", {ground:true, walk:false});

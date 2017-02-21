@@ -9,6 +9,8 @@
 	import _blitEngine.PlayerInfo;
 	import _blitEngine.BitCamera;
 	import _lib._gameObjects._components.HitBox;
+	import flash.display.BitmapData;
+	import flash.geom.Matrix;
 	
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -29,12 +31,16 @@
 		private var testOb:Object;
 		public var playerSpawn:Point;
 		public var mapBounds:Rectangle;
+		private var tileList:Array;
+		private var zBufferData:Array;
 		//------------------------------constructor-------------------------------------------
 		
 		public function TileLevel(levelJSON:Object = null) {
 		// Define basic stats for new generic object: _tic(a counter) set to zero, lives forever, 
 		// base points, dies on hit, only moves down, and basic audio.
 			members = new Array();
+			tileList = new Array();
+			zBufferData = new Array();
 			playerSpawn = new Point(0,0);
 			(levelJSON == null)?testJSON = (new TestJSON().testJSON):testJSON = levelJSON;
 		}
@@ -129,10 +135,35 @@
 						if(map[h][w - 1] == 0 || map[h][w-1] == undefined) tile.allowCollision |= ExtraFunctions.LEFT;
 						if(map[h][w+1] == 0 || map[h][w+1] == undefined) tile.allowCollision |= ExtraFunctions.RIGHT;
 						members.push(tile);
+						tileList.push(tile);
 						tile.showMe(_scene);
 					}
 				}
 			}
+			
+			var tempGC:GraphicsComponent;
+			for (var t:int = tileList.length - 1; t >= 0; t--)
+			{
+				tempGC = tileList[t].getComponent(GraphicsComponent);
+				if (tempGC != null)
+				{
+					//trace("start tile draw");
+					//trace(tempGC.zBuff);
+					if (zBufferData[tempGC.zBuff] == undefined)
+					{
+						var newGC:GraphicsComponent = new GraphicsComponent(this, _camera);
+						addComponent(newGC);
+						zBufferData[tempGC.zBuff] = newGC;
+						zBufferData[tempGC.zBuff].sprite = new BitmapData(mapBounds.width + 24, mapBounds.height +24,true,0x00ffffff);
+						zBufferData[tempGC.zBuff].zBuff = tempGC.zBuff;
+					}
+					zBufferData[tempGC.zBuff].sprite.copyPixels(tempGC.currentDisplay, new Rectangle(0, 0, tempGC.width, tempGC.height), new Point(tileList[t].x, tileList[t].y), null, null, true);
+					
+				}
+				
+			}
+			this.x = this.last.x = (mapBounds.width / 2);
+			this.y = this.last.y = mapBounds.height;
 		}
 		
 		public function findSpawns():void{
@@ -191,6 +222,13 @@
 				
 				i++;
 			}
+		}
+		
+		override public function killMe():void
+		{
+			removeComponents();
+			super.killMe();
+			
 		}
 		
 	}	

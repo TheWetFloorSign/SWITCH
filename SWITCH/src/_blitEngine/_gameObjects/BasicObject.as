@@ -61,8 +61,6 @@
 		
 		public var type:String = "";
 		
-		public var gc:GraphicsComponent;
-		
 		/* 
 		totalSpeed is used when x and y speeds are linked so that the speed vector doesn't 
 		exceed the total intended speed.   */
@@ -111,6 +109,7 @@
 				
 		public function killMe():void{
 			_scene.removeGameOb(this);	
+			removeComponents();
 			_alive = false;
 			_exists = false;
 			resetMe();
@@ -159,6 +158,16 @@
 			}
 		}
 		
+		public function removeComponents():void
+		{
+			
+			for (var i:int = componentList.length -1; i >= 0; i--)
+			{
+				componentList[i].kill();
+				componentList.splice(i, 1);
+			}
+		}
+		
 		public function resetMe():void{}
 		
 		public function showMe(scene:Object, playerInfo:PlayerInfo = null):void{
@@ -177,9 +186,9 @@
 		
 		public function updateMe():void{}
 		
-		public function render():void
+		/*public function render():void
 		{
 			if (gc != null) gc.render();
-		}
+		}*/
 	}	
 }

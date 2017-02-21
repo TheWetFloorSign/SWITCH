@@ -46,14 +46,21 @@ package  _lib._gameObjects._components
 		public function GraphicsComponent(_actor:*,camera:BitCamera = null):void
 		{
 			actor = _actor;
-			if (camera != null) camera.addDraw(this);
+			if (camera != null)
+			{
+				camera.addDraw(this);
+				_camera = camera;
+			}
 		}
 		
 		public function get currentDisplay(): BitmapData
 		{
-			if (spriteManager) return spriteManager.aniFrame.sprite;
+			if (spriteManager)
+			{
+				return (_hFlip != 1 || _vFlip != 1)? renderFlip(spriteManager.sprite): spriteManager.sprite;
+			}
 			if (sprite == null) sprite =  new BitmapData(10, 10, true, 0x00000000);
-			return sprite;
+			return (_hFlip != 1 || _vFlip != 1)? renderFlip(sprite):sprite;
 		}
 		
 		public function get width():int
@@ -93,7 +100,7 @@ package  _lib._gameObjects._components
 			cam.addDraw(this);
 		}
 		
-		public function render():void{
+		/*public function render():void{
 			if (_camera != null)
 			{
 				_inView = true;
@@ -123,20 +130,16 @@ package  _lib._gameObjects._components
 				}
 			}
 			
-		}
+		}*/
 		
 		private function renderFlip(_sprite:BitmapData):BitmapData
 		{
-			if (_hFlip < 0 || _vFlip < 0)
-			{
-				var newSprite:BitmapData = new BitmapData(_sprite.width, _sprite.height, true, 0x00ffffff);
+			var newSprite:BitmapData = new BitmapData(_sprite.width, _sprite.height, true, 0x00ffffff);
 				mx.identity();
 				mx.scale(_hFlip, _vFlip);
 				mx.translate((_hFlip < 0)?width:0, (_vFlip < 0)?height:0);
 				newSprite.draw(_sprite, mx);
 				return newSprite;
-			}
-			return _sprite;
 		}
 		
 		
@@ -144,6 +147,11 @@ package  _lib._gameObjects._components
 		public function update():void
 		{
 			if(spriteManager)spriteManager.updateAni();
+		}
+		
+		public function kill():void
+		{
+			if (_camera) _camera.removeDraw(this);
 		}
 	}
 	

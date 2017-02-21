@@ -26,7 +26,7 @@ package _lib._gameObjects._enemies._minions{
 		
 		private var tempState:IState;
 		
-		public var gC:GraphicsComponent;
+		public var gc:GraphicsComponent;
 		public var pL:PhysicsLite;
 		public var hB:HitBox;
 		
@@ -47,8 +47,8 @@ package _lib._gameObjects._enemies._minions{
 			
 			aniMachine = new AnimationStateMachine();
 			componentList.push(new GraphicsComponent(this));
-			gC = getComponent(GraphicsComponent);
-			gC.spriteManager = aniMachine;
+			gc = getComponent(GraphicsComponent);
+			gc.spriteManager = aniMachine;
 			
 			_totalSpeed = 3;
 			
@@ -78,12 +78,12 @@ package _lib._gameObjects._enemies._minions{
 				if (_left)
 				{
 					pL.vector.x = -2;
-					gC._hFlip = -1;
+					gc._hFlip = -1;
 				}
 				if (_right)
 				{
 					pL.vector.x = 2;
-					gC._hFlip = 1;
+					gc._hFlip = 1;
 				}
 				
 				last.x = x;
@@ -128,7 +128,8 @@ package _lib._gameObjects._enemies._minions{
 		
 		override public function onShowMe():void{
 			gc = getComponent(GraphicsComponent);
-			gc._camera = _camera;
+			gc.camera = _camera;
+			gc.zBuff = 1;
 		}
 			
 		public function enterCollision():void
@@ -137,7 +138,7 @@ package _lib._gameObjects._enemies._minions{
 			if (!isHit)
 			{
 				isHit = true;
-				gC._hFlip = (hB.target.x > x)?-1:1;
+				gc._hFlip = (hB.target.x > x)?-1:1;
 			}
 		}
 		

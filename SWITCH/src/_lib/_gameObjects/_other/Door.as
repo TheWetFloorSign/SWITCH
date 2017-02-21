@@ -58,9 +58,9 @@
 		override public function onShowMe():void{
 			
 			
-			gc = getComponent(GraphicsComponent);
-			gc.sprite = _bmdCanvas;
-			gc.camera = _camera;
+			sprite = getComponent(GraphicsComponent);
+			sprite.sprite = _bmdCanvas;
+			sprite.camera = _camera;
 		}
 		
 		public function setAnimations():void{

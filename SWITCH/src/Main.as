@@ -21,12 +21,12 @@
 		private var playerInfo:PlayerInfo;
 		private var activeScreen:Object;
 		
-		public var fps:int = Math.ceil(1000/60);
+		public var fps:int = Math.floor(1000/60);
 		public var now:uint;
 		public var last:uint;
 		public var delta:uint;
 		public var steps:uint = 0;
-		public var maxStep:uint = 2 * fps;
+		public var maxStep:uint = 1 * fps;
 		
 		
 		
@@ -127,11 +127,11 @@
 					steps = maxStep;
 				}
 								
-				while (steps >= fps)
-				{
+				//while (steps >= fps)
+				//{
 					activeScreen.gameLoop();
 					steps = steps - fps;
-				}
+				//}
 			}
 			activeScreen.drawScene();
 			activeScreen.incre = 0;

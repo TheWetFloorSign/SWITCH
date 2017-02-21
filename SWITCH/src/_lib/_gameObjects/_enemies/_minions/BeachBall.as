@@ -26,7 +26,7 @@ package _lib._gameObjects._enemies._minions{
 		
 		private var tempState:IState;
 		
-		public var sprite:GraphicsComponent;
+		public var gc:GraphicsComponent;
 		public var pl:PhysicsLite;
 		
 		
@@ -100,13 +100,13 @@ package _lib._gameObjects._enemies._minions{
 		
 		override public function onShowMe():void{
 			gc = getComponent(GraphicsComponent);
-			gc._camera = _camera;
+			gc.camera = _camera;
 		}
 			
 		public function enterCollision():void
 		{
 			//trace(obj + " just touched " + this);
-			var targ:BasicObject = getComponent(HitBox).target;
+			/*var targ:BasicObject = getComponent(HitBox).target;
 			var phys:PhysicsLite = targ.getComponent(PhysicsLite);
 			if (phys == null){
 				return;
@@ -117,7 +117,7 @@ package _lib._gameObjects._enemies._minions{
 				pl.vector.x = phys.vector.x;
 				getComponent(GraphicsComponent)._hFlip = (targ.x > x)? -1:1;
 				_scene.soundManager.playSound("ball", 1.5);
-			}
+			}*/
 		}
 		
 		public function continuedCollision():void

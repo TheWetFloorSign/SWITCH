@@ -20,6 +20,9 @@
 		private var fadeColor:uint;
 		private var fadeCallBack:Function;
 		
+		private var lowZ:int = 0;
+		private var highZ:int = 0;
+		
 		private var gcList:Array;
 		
 		private var dirtyBMD:BitmapData;
@@ -46,6 +49,16 @@
 		public var renderPoint:Point = new Point(0, 0);
 		private var mx:Matrix = new Matrix();
 		private var rec:Rectangle = new Rectangle();
+		
+		private var r_inView:Boolean;
+		private var r_x:int;
+		private var r_y:int;
+		private var r_width:int;
+		private var r_height:int;
+		private var mod:BitPoint;
+			
+		private var clampx:Boolean;
+		private var clampy:Boolean;
 		
 		public function BitCamera(width:int = 800,height:int = 600, zoom:Number = 1) {
 			// constructor code
@@ -84,6 +97,15 @@
 				}
 			}
 			gcList.push(gc);
+			if (gc.zBuff < lowZ)
+			{
+				lowZ = gc.zBuff;
+			}
+			
+			if (gc.zBuff > highZ)
+			{
+				highZ = gc.zBuff;
+			}
 		}
 		
 		public function removeDraw(gc:GraphicsComponent):void
@@ -122,7 +144,7 @@
 		}
 		
 		public function update():void{
-			canvas.lock();
+			this.bitmapData.lock();
 			canvas.copyPixels(dirtyBMD, dirtyBMD.rect, new Point());
 			//canvas.fillRect(canvas.rect, 0x00ff00);
 			if(target != null){
@@ -162,8 +184,8 @@
 				if(scroll.y >cameraBounds.height) scroll.y = cameraBounds.height;
 				cameraView = new Rectangle(scroll.x as int,scroll.y as int,_width,_height);
 			}
-			var z:int = -1;
-			while (z <= 1)
+			var z:int = lowZ;
+			while (z <= highZ)
 			{
 				for (var i:int = gcList.length - 1; i >= 0; i--)
 				{
@@ -176,34 +198,39 @@
 				z++;
 			}
 			updateEffects();
-			canvas.unlock();
+			this.bitmapData.unlock();
 			
 			
 		}
 		
 		private function render(gc:GraphicsComponent):void{
-			var _inView:Boolean = true;
-			var x:int = gc.parent.x;
-			var y:int = gc.parent.y;
-			var width:int = gc.width;
-			var height:int = gc.height;
-			var mod:BitPoint = gc.scrollMod;
+			r_inView = true;
+			r_x = gc.parent.x;
+			r_y = gc.parent.y;
+			r_width = gc.width;
+			r_height = gc.height;
+			mod = gc.scrollMod;
 			
-			var clampx:Boolean = gc.clampX;
-			var clampy:Boolean = gc.clampY;
+			clampx = gc.clampX;
+			clampy = gc.clampY;
 			
-			if (x - width > (cameraView.x * mod.x) + cameraView.width ||
-			x + width < (cameraView.x * mod.x) ||
-			y - height > (cameraView.y * mod.y) + cameraView.height ||
-			y < (cameraView.y * mod.y)) _inView = false;
-			if (clampx && clampy) _inView = true;
+			if (r_x - r_width > (cameraView.x * mod.x) + cameraView.width ||
+			r_x + r_width < (cameraView.x * mod.x) ||
+			r_y - r_height > (cameraView.y * mod.y) + cameraView.height ||
+			r_y < (cameraView.y * mod.y)) r_inView = false;
+			if (clampx && clampy) r_inView = true;
 			
-			if (_inView && gc.parent._alive)
+			if (r_inView)
 			{
-				renderPoint.x = (clampx)?x:int((x - (width / 2) - (gc.xOff * gc._hFlip)) - (scroll.x * mod.x));
-				renderPoint.y = (clampy)?y:int((y - height - (gc.yOff * gc._vFlip)) - (scroll.y * mod.y));
-				rec.setTo(0, 0, width, height);
-				canvas.copyPixels(renderFlip(gc), rec, renderPoint, null, null, true);
+				renderPoint.x = (clampx)?r_x:((r_x - (r_width / 2) - (gc.xOff * gc._hFlip)) - (scroll.x * mod.x));
+				renderPoint.y = (clampy)?r_y:((r_y - r_height - (gc.yOff * gc._vFlip)) - (scroll.y * mod.y));
+				rec.setTo(0, 0, r_width, r_height);
+				//trace(renderPoint);
+				r_x = renderPoint.x;
+				r_y = renderPoint.y;
+				renderPoint.x = r_x;
+				renderPoint.y = r_y;
+				canvas.copyPixels(gc.currentDisplay, rec, renderPoint, null, null, true);
 				/*if (_camera.debugHB)
 				{
 					renderPoint.x = renderPoint.y = 0;
@@ -219,26 +246,11 @@
 			
 		}
 		
-		private function renderFlip(gc:GraphicsComponent):BitmapData
-		{
-			var bmd:BitmapData = gc.currentDisplay;
-			if (gc._hFlip < 0 || gc._vFlip < 0)
-			{
-				var newSprite:BitmapData = new BitmapData(bmd.width, bmd.height, true, 0x00ffffff);
-				mx.identity();
-				mx.scale(gc._hFlip,gc. _vFlip);
-				mx.translate((gc._hFlip < 0)?gc.width:0, (gc._vFlip < 0)?gc.height:0);
-				newSprite.draw(bmd, mx);
-				return newSprite;
-			}
-			return bmd;
-		}
-		
 		public function updateEffects():void
 		{
 			if (_fadeOut)
 			{
-				var fill:BitmapData = new BitmapData(this._width, this._width, true, rgbaConcat(0x000000,((maxVal-tic)/maxVal)));
+				var fill:BitmapData = new BitmapData(this._width, this._height, true, rgbaConcat(0x000000,((maxVal-tic)/maxVal)));
 				canvas.copyPixels(fill, fill.rect, new Point(0, 0), null, null, true);
 				tic--;
 				if (tic <= 0)
@@ -248,7 +260,7 @@
 				}
 			}else if (_fadeIn)
 			{
-				var fill:BitmapData = new BitmapData(this._width, this._width, true, rgbaConcat(0x000000,(tic/maxVal)));
+				var fill:BitmapData = new BitmapData(this._width, this._height, true, rgbaConcat(0x000000,(tic/maxVal)));
 				canvas.copyPixels(fill, fill.rect, new Point(0, 0), null, null, true);
 				tic--;
 				if (tic <= 0) _fadeIn = false;
@@ -257,7 +269,7 @@
 		
 		
 		private function rgbaConcat(hexStr:uint,alpha:Number):uint{
-			var a:uint = (uint)((alpha) * 255);
+			var a:uint = ((alpha) * 255);
 			trace(alpha);
 			return (a << 24 | hexStr);
 		}

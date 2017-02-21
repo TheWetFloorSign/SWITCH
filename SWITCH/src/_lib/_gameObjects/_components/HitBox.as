@@ -160,6 +160,8 @@ package _lib._gameObjects._components
 			}
 			
 		}
+		
+		public function kill():void{}
 	}
 	
 }

@@ -55,14 +55,14 @@ package _lib._gameObjects._enemies._minions{
 		//--------------------------- EVENT HANDLERS
 		//
 		override public function updateMe():void{
-			if (_alive){		
+			if (_exists){		
 				last.x = x;
 				last.y = y;
 				x = _parent.x + _offset.x;
 				y = _parent.y + _offset.y;
 				_stateTic--;
 				if (_stateTic <= 0){
-					_alive = false;
+					_exists = false;
 				}
 				
 			}else{
