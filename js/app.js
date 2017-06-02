@@ -1,0 +1,35 @@
+requirejs.config({
+	"baseURL":"js",
+	"paths":{
+		"AnimationStateMachine":"app/classes/gfx/AnimationStateMachine",
+		"Assets":"app/classes/gfx/Assets",
+		"Background":"app/classes/gameObject/Background",
+		"BasicObject":"app/classes/gameObject/BasicObject",
+		"BindingInfo":"app/classes/input/BindingInfo",
+		"Camera":"app/classes/display/Camera",
+		"Class":"libs/class",
+		"ControlBinding":"app/classes/input/ControlBinding",
+		"Display":"app/classes/display/Display",
+		"Game":"app/classes/Game",
+		"GraphicsComponent":"app/classes/components/GraphicsComponent",
+		"IBinding":"app/classes/input/IBinding",
+		"ImageLoader":"app/classes/gfx/ImageLoader",
+		"Jquery":"libs/jquery-3.1.1",
+		"KeyManager":"app/classes/input/KeyManager",
+		"Launcher":"app/classes/Launcher",		
+		"Player":"app/classes/gameObject/Player",
+		"Sprite":"app/classes/gfx/Sprite",
+		"SpriteAnimation":"app/classes/gfx/SpriteAnimation",
+		"SpriteLibrary":"app/classes/gfx/SpriteLibrary",
+		"SpriteSheet":"app/classes/gfx/SpriteSheet",
+		"StateManager":"app/classes/gameObject/states/StateManager",
+		"StatePlayerFall":"app/classes/gameObject/states/player/StatePlayerFall",
+		"StatePlayerIdle":"app/classes/gameObject/states/player/StatePlayerIdle",
+		"StatePlayerJump":"app/classes/gameObject/states/player/StatePlayerJump",
+		"StatePlayerRun":"app/classes/gameObject/states/player/StatePlayerRun",
+		"StatePlayerStand":"app/classes/gameObject/states/player/StatePlayerStand"
+		
+	}
+});
+
+require(['app/main']);

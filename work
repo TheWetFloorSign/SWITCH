@@ -1,0 +1,36 @@
+<NotepadPlus>
+    <Project name="HtmlGame">
+        <Folder name="images">
+            <File name="images\BeatEmUpSprites20160327.png" />
+        </Folder>
+        <Folder name="js">
+            <Folder name="app">
+                <Folder name="classes">
+                    <Folder name="display">
+                        <File name="js\app\classes\display\Display.js" />
+                    </Folder>
+                    <Folder name="gfx">
+                        <File name="js\app\classes\gfx\Assets.js" />
+                        <File name="js\app\classes\gfx\ImageLoader.js" />
+                        <File name="js\app\classes\gfx\SpriteSheet.js" />
+                    </Folder>
+                    <Folder name="input">
+                        <File name="js\app\classes\input\KeyManager.js" />
+                    </Folder>
+                    <File name="js\app\classes\Game.js" />
+                    <File name="js\app\classes\Handler.js" />
+                    <File name="js\app\classes\Launcher.js" />
+                </Folder>
+                <File name="js\app\main.js" />
+            </Folder>
+            <Folder name="libs">
+                <File name="js\libs\class.js" />
+                <File name="js\libs\jquery-3.1.1.js" />
+                <File name="js\libs\require.js" />
+            </Folder>
+            <File name="js\app.js" />
+        </Folder>
+        <File name="game.html" />
+        <File name="index.html" />
+    </Project>
+</NotepadPlus>
